@@ -2,22 +2,68 @@
   "from": "Jess y Carlos",
   "guests": [
     {
-      "to": "Juan Carlos, Pao, Tuti y Samy",
-      "url": "juan-carlos"
+      "to": "Carlos, Moni y Mile",
+      "url": "familia-totoy"
     },
     {
-      "to": "Juan",
-      "url": "Juan",
-      "validity": "Valido para 1 persona"
+      "to": "Ricardo y Marlene",
+      "url": "ricardo"
+    },
+    {
+      "to":"Key, Kyotto y Marachi",
+      "url": "key"
+    },
+    {
+      "to": "Danny y Diana",
+      "url": "wachin"
+    },
+    {
+      "to": "Xavier",
+      "url": "xavier",
+      "validity": 1
+    },
+    {
+      "to": "Martin",
+      "url": "martin",
+      "validity": 1
     },
     {
       "to": "Amparo",
-      "url": "amparo"
+      "url": "amparo",
+      "validity": 1
+    },
+    {
+      "to": "Gabo, Pao y Senito",
+      "url": "gabos"
+    },
+    {
+      "to": "Juan Carlos, Pao, Teti y Samy",
+      "url": "juan-carlos"
+    },
+    {
+      "to": "Caro",
+      "url": "caro",
+      "validity": 2
+    },
+    {
+      "to": "Juan",
+      "url": "juan",
+      "validity": 1
     },
     {
       "to": "Liss",
       "url": "liss",
-      "validity": "Valido para 1 persona"
+      "validity": 1
+    },
+    {
+      "to": "Andre",
+      "url": "andre",
+      "validity": 1
+    },
+    {
+      "to": "Sebas",
+      "url": "sebas",
+      "validity": 1
     }
   ]
 }

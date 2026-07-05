@@ -13,13 +13,13 @@ type SectionDirection = {
 type GuestEntry = {
   to: string;
   url: string;
-  validity?: string | null;
+  validity?: number | null;
 };
 
 type GuestEntryInput = {
   to: string;
   url: string;
-  validity?: string | null;
+  validity?: number | null;
 };
 
 type GuestsPayload = {
@@ -185,7 +185,9 @@ function isGuestEntry(value: unknown): value is GuestEntryInput {
   const hasValidValidity =
     candidate.validity === undefined ||
     candidate.validity === null ||
-    (typeof candidate.validity === 'string' && Boolean(candidate.validity.trim()));
+    (typeof candidate.validity === 'number' &&
+      Number.isFinite(candidate.validity) &&
+      candidate.validity >= 0);
 
   return Boolean(
     typeof candidate.to === 'string' &&
@@ -194,6 +196,11 @@ function isGuestEntry(value: unknown): value is GuestEntryInput {
       candidate.url.trim() &&
       hasValidValidity,
   );
+}
+
+function formatValidityLabel(validity: number): string {
+  const noun = validity === 1 ? 'persona' : 'personas';
+  return `Valido para ${validity} ${noun}`;
 }
 
 function parseGuestsData(incoming: unknown): GuestsPayload {
@@ -213,7 +220,7 @@ function parseGuestsData(incoming: unknown): GuestsPayload {
     guests: rawGuests.filter(isGuestEntry).map((guest) => ({
       to: guest.to.trim(),
       url: guest.url.trim(),
-      validity: guest.validity,
+      validity: typeof guest.validity === 'number' ? guest.validity : null,
     })),
   };
 }
@@ -549,8 +556,9 @@ export function App() {
     : 'Validando invitacion';
   const envelopeFromValue = envelopeFrom;
   const envelopeToValue = matchedGuest?.to ?? '';
-  const guestValidity = matchedGuest?.validity ?? null;
-  const hasGuestValidity = Boolean(canOpenEnvelope && guestValidity);
+  const guestValidity =
+    typeof matchedGuest?.validity === 'number' && matchedGuest.validity > 0 ? matchedGuest.validity : null;
+  const hasGuestValidity = Boolean(canOpenEnvelope && guestValidity !== null);
 
   function openEnvelope() {
     if (isEnvelopeOpening || isEnvelopeOpen || !canOpenEnvelope) {
@@ -697,7 +705,9 @@ export function App() {
               ) : null}
             </span>
           </button>
-          {hasGuestValidity ? <p className="envelope-validity">{guestValidity}</p> : null}
+          {hasGuestValidity && guestValidity !== null ? (
+            <p className="envelope-validity">{formatValidityLabel(guestValidity)}</p>
+          ) : null}
         </section>
       ) : null}
 
