@@ -1,0 +1,23 @@
+{
+  "from": "Jess y Carlos",
+  "guests": [
+    {
+      "to": "Juan Carlos, Pao, Tuti y Samy",
+      "url": "juan-carlos"
+    },
+    {
+      "to": "Juan",
+      "url": "Juan",
+      "validity": "Valido para 1 persona"
+    },
+    {
+      "to": "Amparo",
+      "url": "amparo"
+    },
+    {
+      "to": "Para: Liss",
+      "url": "liss",
+      "validity": "Valido para 1 persona"      
+    }
+  ]
+}

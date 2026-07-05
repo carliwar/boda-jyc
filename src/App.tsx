@@ -10,6 +10,25 @@ type SectionDirection = {
   align: 'left' | 'right';
 };
 
+type GuestEntry = {
+  to: string;
+  url: string;
+  validity?: string | null;
+};
+
+type GuestEntryInput = {
+  to: string;
+  url: string;
+  validity?: string | null;
+};
+
+type GuestsPayload = {
+  from: string;
+  guests: GuestEntry[];
+};
+
+const defaultEnvelopeFrom = 'Jess y Carlos';
+
 type InvitationContent = {
   meta: {
     eventDateTime: string;
@@ -69,7 +88,7 @@ const fallbackContent: InvitationContent = {
   envelope: {
     title: 'Invitacion',
     stampText: 'J & C',
-    cta: 'Toca para abrir',
+    cta: '',
   },
   header: {
     eyebrow: 'Nuestra Boda',
@@ -114,6 +133,84 @@ const fallbackContent: InvitationContent = {
 };
 
 type PartialInvitation = Partial<InvitationContent>;
+
+function normalizeGuestSlug(value: string) {
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
+function getGuestSlugFromPath(pathname: string, baseUrl: string): string | null {
+  const baseSegments = baseUrl.split('/').filter(Boolean);
+  const pathSegments = pathname.split('/').filter(Boolean);
+
+  let candidateSegments = pathSegments;
+  if (baseSegments.length > 0 && pathSegments.length >= baseSegments.length) {
+    const startsWithBase = baseSegments.every(
+      (segment, index) => segment.toLowerCase() === pathSegments[index]?.toLowerCase(),
+    );
+    if (startsWithBase) {
+      candidateSegments = pathSegments.slice(baseSegments.length);
+    }
+  }
+
+  const slugSegment = candidateSegments[0];
+  if (!slugSegment) {
+    return null;
+  }
+
+  try {
+    return normalizeGuestSlug(decodeURIComponent(slugSegment));
+  } catch {
+    return normalizeGuestSlug(slugSegment);
+  }
+}
+
+function isGuestEntry(value: unknown): value is GuestEntryInput {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const candidate = value as { to?: unknown; url?: unknown; validity?: unknown };
+  const hasValidValidity =
+    candidate.validity === undefined ||
+    candidate.validity === null ||
+    (typeof candidate.validity === 'string' && Boolean(candidate.validity.trim()));
+
+  return Boolean(
+    typeof candidate.to === 'string' &&
+      candidate.to.trim() &&
+      typeof candidate.url === 'string' &&
+      candidate.url.trim() &&
+      hasValidValidity,
+  );
+}
+
+function parseGuestsData(incoming: unknown): GuestsPayload {
+  const parsedFrom =
+    incoming && typeof incoming === 'object' && typeof (incoming as { from?: unknown }).from === 'string'
+      ? (incoming as { from: string }).from.trim()
+      : '';
+
+  const rawGuests = Array.isArray(incoming)
+    ? incoming
+    : incoming && typeof incoming === 'object' && Array.isArray((incoming as { guests?: unknown[] }).guests)
+      ? (incoming as { guests: unknown[] }).guests
+      : [];
+
+  return {
+    from: parsedFrom || defaultEnvelopeFrom,
+    guests: rawGuests.filter(isGuestEntry).map((guest) => ({
+      to: guest.to.trim(),
+      url: guest.url.trim(),
+      validity: guest.validity,
+    })),
+  };
+}
 
 function parseDirection(incomingDirection: Partial<SectionDirection> | undefined): SectionDirection | undefined {
   const position = incomingDirection?.position;
@@ -194,6 +291,9 @@ function formatUnit(value: number) {
 export function App() {
   const [content, setContent] = useState<InvitationContent>(fallbackContent);
   const [isContentReady, setIsContentReady] = useState(false);
+  const [guests, setGuests] = useState<GuestEntry[]>([]);
+  const [envelopeFrom, setEnvelopeFrom] = useState(defaultEnvelopeFrom);
+  const [areGuestsReady, setAreGuestsReady] = useState(false);
   const [isEnvelopeOpening, setIsEnvelopeOpening] = useState(false);
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
   const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
@@ -249,6 +349,40 @@ export function App() {
     }
 
     void loadContent();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadGuests() {
+      try {
+        const response = await fetch(`${import.meta.env.BASE_URL}content/guests.json`);
+        if (!response.ok) {
+          throw new Error(`Failed to load guests file: ${response.status}`);
+        }
+        const data = (await response.json()) as unknown;
+        const parsedGuestsData = parseGuestsData(data);
+        if (isMounted) {
+          setGuests(parsedGuestsData.guests);
+          setEnvelopeFrom(parsedGuestsData.from);
+        }
+      } catch {
+        if (isMounted) {
+          setGuests([]);
+          setEnvelopeFrom(defaultEnvelopeFrom);
+        }
+      } finally {
+        if (isMounted) {
+          setAreGuestsReady(true);
+        }
+      }
+    }
+
+    void loadGuests();
 
     return () => {
       isMounted = false;
@@ -367,8 +501,31 @@ export function App() {
     return segments;
   }, [content.header.eyebrow]);
 
+  const guestSlug = useMemo(
+    () => getGuestSlugFromPath(window.location.pathname, import.meta.env.BASE_URL),
+    [],
+  );
+
+  const matchedGuest = useMemo(() => {
+    if (!guestSlug) {
+      return null;
+    }
+
+    return guests.find((guest) => normalizeGuestSlug(guest.url) === guestSlug) ?? null;
+  }, [guestSlug, guests]);
+
+  const hasValidGuestAccess = Boolean(matchedGuest);
+  const canOpenEnvelope = areGuestsReady && hasValidGuestAccess;
+  const envelopeTitle = areGuestsReady
+    ? matchedGuest?.to ?? 'Invitacion no valida'
+    : 'Validando invitacion';
+  const envelopeFromLabel = `De: ${envelopeFrom}`;
+  const envelopeToLabel = `Para: ${matchedGuest?.to ?? ''}`;
+  const guestValidity = matchedGuest?.validity ?? null;
+  const hasGuestValidity = Boolean(canOpenEnvelope && guestValidity);
+
   function openEnvelope() {
-    if (isEnvelopeOpening || isEnvelopeOpen) {
+    if (isEnvelopeOpening || isEnvelopeOpen || !canOpenEnvelope) {
       return;
     }
 
@@ -418,7 +575,12 @@ export function App() {
     <div className="invitation-shell">
       {!isEnvelopeOpen ? (
         <section className={`envelope-stage${isEnvelopeOpening ? ' opening' : ''}`} aria-label="Abrir invitacion">
-          <button type="button" className="envelope" onClick={openEnvelope}>
+          <button
+            type="button"
+            className={`envelope${canOpenEnvelope ? '' : ' envelope-disabled'}`}
+            onClick={openEnvelope}
+            disabled={!canOpenEnvelope}
+          >
             <span className="envelope-paper" aria-hidden="true" />
             <span className="envelope-interior" aria-hidden="true" />
             <span className="envelope-flap" aria-hidden="true" />
@@ -429,12 +591,22 @@ export function App() {
                 alt=""
               />
             </span>
-            <span className="envelope-copy">
-              <strong>{content.envelope.title}</strong>
-              <span>{content.envelope.cta}</span>
-              {!isContentReady ? <span className="envelope-loading">Cargando...</span> : null}
+            <span className={`envelope-copy${hasGuestValidity ? ' envelope-copy-has-validity' : ''}`}>
+              {canOpenEnvelope ? (
+                <>
+                  <strong className="envelope-party">{envelopeFromLabel}</strong>
+                  <strong className="envelope-party">{envelopeToLabel}</strong>
+                </>
+              ) : (
+                <strong>{envelopeTitle}</strong>
+              )}
+              {!isContentReady || !areGuestsReady ? <span className="envelope-loading">Cargando...</span> : null}
+              {areGuestsReady && !hasValidGuestAccess ? (
+                <span className="envelope-invalid-message">Este enlace no tiene una invitacion activa.</span>
+              ) : null}
             </span>
           </button>
+          {hasGuestValidity ? <p className="envelope-validity">{guestValidity}</p> : null}
         </section>
       ) : null}
 
