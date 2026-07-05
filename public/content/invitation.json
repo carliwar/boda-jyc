@@ -20,6 +20,15 @@
       "align": "right"
     }
   },
+  "photoAlbum": {
+    "title": "Comparte tus fotos",
+    "description": "Ayúdanos a capturar cada momento de este día especial.",
+    "buttonLabel": "Abrir álbum de fotos",
+    "waitingLabel": "Esperando el día",
+    "shareUrl": "https://photos.app.goo.gl/B2orqaYkp2ieVJyQ9",
+    "checkDate": false,
+    "divider": true
+  },
   "quote": {
     "title": "",
     "text": "El amor es la única cosa que transciende el tiempo y el espacio.",

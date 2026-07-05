@@ -652,12 +652,27 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--sp-2);
   border-radius: 999px;
   padding: var(--sp-2) var(--sp-5);
   color: #fff;
   text-decoration: none;
   background: linear-gradient(140deg, var(--taupe-deep), #9f8c76);
   border: 1px solid rgba(68, 56, 45, 0.2);
+  font: inherit;
+  cursor: pointer;
+}
+
+.cta-button-disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+  filter: saturate(0.6);
+  background: linear-gradient(140deg, #b8ab97, #a2917c);
+}
+
+.cta-button-icon {
+  font-size: 1.15em;
+  line-height: 1;
 }
 
 .dress-note {

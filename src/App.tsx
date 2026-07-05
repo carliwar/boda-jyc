@@ -49,6 +49,16 @@ type InvitationContent = {
     direction?: SectionDirection;
     divider?: boolean | null;
   };
+  photoAlbum: {
+    title: string;
+    description: string;
+    buttonLabel: string;
+    waitingLabel: string;
+    shareUrl: string;
+    checkDate?: boolean | null;
+    direction?: SectionDirection;
+    divider?: boolean | null;
+  };
   quote: {
     title: string;
     text: string;
@@ -104,6 +114,13 @@ const fallbackContent: InvitationContent = {
   countdown: {
     title: 'Cuenta regresiva en vivo',
     expiredMessage: 'Ya llego el gran dia',
+  },
+  photoAlbum: {
+    title: 'Comparte tus fotos',
+    description: 'Ayudanos a capturar cada momento de este dia especial.',
+    buttonLabel: 'Abrir album de fotos',
+    waitingLabel: 'Esperando el dia',
+    shareUrl: '',
   },
   quote: {
     title: 'Quote',
@@ -243,6 +260,10 @@ function parseDivider(incomingDivider: boolean | null | undefined): boolean {
   return incomingDivider === true;
 }
 
+function parseCheckDate(incomingCheckDate: boolean | null | undefined): boolean {
+  return incomingCheckDate !== false;
+}
+
 function mergeInvitationContent(incoming: PartialInvitation): InvitationContent {
   const itineraryItems = incoming.itinerary?.items?.filter(
     (item): item is ItineraryItem => Boolean(item?.time && item?.label),
@@ -267,6 +288,16 @@ function mergeInvitationContent(incoming: PartialInvitation): InvitationContent 
       expiredMessage: incoming.countdown?.expiredMessage ?? fallbackContent.countdown.expiredMessage,
       direction: parseDirection(incoming.countdown?.direction),
       divider: parseDivider(incoming.countdown?.divider),
+    },
+    photoAlbum: {
+      title: incoming.photoAlbum?.title ?? fallbackContent.photoAlbum.title,
+      description: incoming.photoAlbum?.description ?? fallbackContent.photoAlbum.description,
+      buttonLabel: incoming.photoAlbum?.buttonLabel ?? fallbackContent.photoAlbum.buttonLabel,
+      waitingLabel: incoming.photoAlbum?.waitingLabel ?? fallbackContent.photoAlbum.waitingLabel,
+      shareUrl: incoming.photoAlbum?.shareUrl ?? fallbackContent.photoAlbum.shareUrl,
+      checkDate: parseCheckDate(incoming.photoAlbum?.checkDate),
+      direction: parseDirection(incoming.photoAlbum?.direction),
+      divider: parseDivider(incoming.photoAlbum?.divider),
     },
     quote: {
       title: incoming.quote?.title ?? fallbackContent.quote.title,
@@ -522,6 +553,25 @@ export function App() {
     { label: 'Minutos', value: countdown.minutes },
     { label: 'Segundos', value: countdown.seconds },
   ];
+
+  const isPhotoAlbumUnlocked = useMemo(() => {
+    if (content.photoAlbum.checkDate === false) {
+      return true;
+    }
+
+    const eventDate = new Date(content.meta.eventDateTime);
+    if (Number.isNaN(eventDate.getTime())) {
+      return true;
+    }
+
+    const eventDayStart = new Date(
+      eventDate.getFullYear(),
+      eventDate.getMonth(),
+      eventDate.getDate(),
+    ).getTime();
+
+    return now >= eventDayStart;
+  }, [content.meta.eventDateTime, content.photoAlbum.checkDate, now]);
 
   const eyebrowLines = useMemo(() => {
     const segments = content.header.eyebrow
@@ -789,6 +839,30 @@ export function App() {
           </div>
           {countdown.isExpired ? <p className="countdown-expired">{content.countdown.expiredMessage}</p> : null}
         </section>
+
+        {content.photoAlbum.shareUrl ? (
+          <section className="section section-photos section-animated">
+            {renderSectionDivider(content.photoAlbum.divider)}
+            {renderSectionBranch(content.photoAlbum.direction)}
+            <h2>{content.photoAlbum.title}</h2>
+            <span className="material-symbols-rounded section-icon" aria-hidden="true">
+              photo_camera
+            </span>
+            <p>{content.photoAlbum.description}</p>
+            {isPhotoAlbumUnlocked ? (
+              <a className="cta-button" href={content.photoAlbum.shareUrl} target="_blank" rel="noreferrer">
+                {content.photoAlbum.buttonLabel}
+              </a>
+            ) : (
+              <button type="button" className="cta-button cta-button-disabled" disabled aria-disabled="true">
+                <span className="material-symbols-rounded cta-button-icon" aria-hidden="true">
+                  schedule
+                </span>
+                {content.photoAlbum.waitingLabel}
+              </button>
+            )}
+          </section>
+        ) : null}
 
         <section className="section section-quote section-animated">
           {renderSectionDivider(content.quote.divider)}
