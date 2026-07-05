@@ -59,6 +59,29 @@ p {
   padding: var(--sp-5);
   gap: 0.4rem;
   font-family: var(--font-envelope);
+  position: relative;
+  overflow: hidden;
+}
+
+.envelope-branch {
+  position: absolute;
+  width: clamp(140px, 32vw, 260px);
+  height: auto;
+  opacity: 0.22;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.envelope-branch-top-left {
+  top: 0;
+  left: 0;
+}
+
+.envelope-branch-bottom-right {
+  bottom: 0;
+  right: 0;
+  transform: rotate(180deg);
 }
 
 .envelope {
@@ -73,6 +96,7 @@ p {
   display: grid;
   place-items: center;
   min-height: 230px;
+  filter: drop-shadow(0 14px 20px rgba(51, 39, 29, 0.22));
 }
 
 .envelope:not(:disabled):hover,
@@ -206,7 +230,6 @@ p {
 }
 
 .envelope-validity {
-  font-size: calc(0.7rem * 0.75);
   letter-spacing: 0.04em;
   text-transform: none;
   color: rgba(53, 44, 36, 0.7);

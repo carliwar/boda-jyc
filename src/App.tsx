@@ -575,6 +575,18 @@ export function App() {
     <div className="invitation-shell">
       {!isEnvelopeOpen ? (
         <section className={`envelope-stage${isEnvelopeOpening ? ' opening' : ''}`} aria-label="Abrir invitacion">
+          <img
+            className="envelope-branch envelope-branch-top-left"
+            src={`${import.meta.env.BASE_URL}icons/branch.png`}
+            alt=""
+            aria-hidden="true"
+          />
+          <img
+            className="envelope-branch envelope-branch-bottom-right"
+            src={`${import.meta.env.BASE_URL}icons/branch.png`}
+            alt=""
+            aria-hidden="true"
+          />
           <button
             type="button"
             className={`envelope${canOpenEnvelope ? '' : ' envelope-disabled'}`}
