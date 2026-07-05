@@ -23,9 +23,9 @@
       "validity": 1
     },
     {
-      "to": "Martin",
+      "to": "Martin (+1)",
       "url": "martin",
-      "validity": 1
+      "validity": 2
     },
     {
       "to": "Amparo",
@@ -33,7 +33,7 @@
       "validity": 1
     },
     {
-      "to": "Gabo, Pao y Senito",
+      "to": "Gabo, Pao",
       "url": "gabos"
     },
     {
@@ -63,6 +63,11 @@
     {
       "to": "Sebas",
       "url": "sebas",
+      "validity": 1
+    },
+    {
+      "to": "Vale",
+      "url": "vale",
       "validity": 1
     }
   ]

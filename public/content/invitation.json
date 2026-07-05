@@ -22,8 +22,8 @@
   },
   "quote": {
     "title": "",
-    "text": "Con el mundo entero desmoronandose, nosotros seguimos eligiendonos.",
-    "author": "Jess y Carlos",
+    "text": "El amor es la única cosa que transciende el tiempo y el espacio.",
+    "author": "",
     "divider": true
   },
   "reception": {
@@ -40,7 +40,7 @@
   },
   "dressCode": {
     "title": "Código de vestimenta",
-    "description": "Formal elegante en tonos neutros y tierra.",
+    "description": "Casual elegante/Garden party",
     "note": "Evitar blanco total y colores neon.",
     "direction": {
       "position": "bottom",
@@ -56,19 +56,34 @@
         "label": "Recepción de invitados"
       },
       {
-        "time": "14:00",
+        "time": "13:30",
         "label": "Ceremonia"
       },
       {
-        "time": "16:00",
+        "time": "14:30",
+        "label": "Brindis"
+      },
+      {
+        "time": "15:00",
         "label": "Comida"
       },
       {
+        "time": "16:00",
+        "label": "Fotos"
+      },
+      {
+        "time": "16:30",
+        "label": "Baile de los novios"
+      },
+      {
+        "time": "17:00",
+        "label": "Celebración"
+      },
+      {
         "time": "19:00",
-        "label": "Celebracion"
+        "label": "Fin de la recepción"
       }
     ]
-    
   },
   "closing": {
     "message": "Con amor Jess y Carlos los esperamos",
