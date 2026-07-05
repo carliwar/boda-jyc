@@ -47,12 +47,14 @@ type InvitationContent = {
     title: string;
     expiredMessage: string;
     direction?: SectionDirection;
+    divider?: boolean | null;
   };
   quote: {
     title: string;
     text: string;
     author: string;
     direction?: SectionDirection;
+    divider?: boolean | null;
   };
   reception: {
     title: string;
@@ -62,22 +64,26 @@ type InvitationContent = {
     buttonLabel: string;
     mapUrl: string;
     direction?: SectionDirection;
+    divider?: boolean | null;
   };
   dressCode: {
     title: string;
     description: string;
     note: string;
     direction?: SectionDirection;
+    divider?: boolean | null;
   };
   itinerary: {
     title: string;
     items: ItineraryItem[];
     direction?: SectionDirection;
+    divider?: boolean | null;
   };
   closing: {
     message: string;
     note: string;
     direction?: SectionDirection;
+    divider?: boolean | null;
   };
 };
 
@@ -226,6 +232,10 @@ function parseDirection(incomingDirection: Partial<SectionDirection> | undefined
   };
 }
 
+function parseDivider(incomingDivider: boolean | null | undefined): boolean {
+  return incomingDivider === true;
+}
+
 function mergeInvitationContent(incoming: PartialInvitation): InvitationContent {
   const itineraryItems = incoming.itinerary?.items?.filter(
     (item): item is ItineraryItem => Boolean(item?.time && item?.label),
@@ -249,12 +259,14 @@ function mergeInvitationContent(incoming: PartialInvitation): InvitationContent 
       title: incoming.countdown?.title ?? fallbackContent.countdown.title,
       expiredMessage: incoming.countdown?.expiredMessage ?? fallbackContent.countdown.expiredMessage,
       direction: parseDirection(incoming.countdown?.direction),
+      divider: parseDivider(incoming.countdown?.divider),
     },
     quote: {
       title: incoming.quote?.title ?? fallbackContent.quote.title,
       text: incoming.quote?.text ?? fallbackContent.quote.text,
       author: incoming.quote?.author ?? fallbackContent.quote.author,
       direction: parseDirection(incoming.quote?.direction),
+      divider: parseDivider(incoming.quote?.divider),
     },
     reception: {
       title: incoming.reception?.title ?? fallbackContent.reception.title,
@@ -264,22 +276,26 @@ function mergeInvitationContent(incoming: PartialInvitation): InvitationContent 
       buttonLabel: incoming.reception?.buttonLabel ?? fallbackContent.reception.buttonLabel,
       mapUrl: incoming.reception?.mapUrl ?? fallbackContent.reception.mapUrl,
       direction: parseDirection(incoming.reception?.direction),
+      divider: parseDivider(incoming.reception?.divider),
     },
     dressCode: {
       title: incoming.dressCode?.title ?? fallbackContent.dressCode.title,
       description: incoming.dressCode?.description ?? fallbackContent.dressCode.description,
       note: incoming.dressCode?.note ?? fallbackContent.dressCode.note,
       direction: parseDirection(incoming.dressCode?.direction),
+      divider: parseDivider(incoming.dressCode?.divider),
     },
     itinerary: {
       title: incoming.itinerary?.title ?? fallbackContent.itinerary.title,
       items: itineraryItems?.length ? itineraryItems : fallbackContent.itinerary.items,
       direction: parseDirection(incoming.itinerary?.direction),
+      divider: parseDivider(incoming.itinerary?.divider),
     },
     closing: {
       message: incoming.closing?.message ?? fallbackContent.closing.message,
       note: incoming.closing?.note ?? fallbackContent.closing.note,
       direction: parseDirection(incoming.closing?.direction),
+      divider: parseDivider(incoming.closing?.divider),
     },
   };
 }
@@ -615,6 +631,21 @@ export function App() {
     );
   }
 
+  function renderSectionDivider(showDivider: boolean | null | undefined) {
+    if (!showDivider) {
+      return null;
+    }
+
+    return (
+      <img
+        className="section-divider"
+        src={`${import.meta.env.BASE_URL}icons/divider.png`}
+        alt=""
+        aria-hidden="true"
+      />
+    );
+  }
+
   return (
     <div className="invitation-shell">
       {!isEnvelopeOpen ? (
@@ -732,6 +763,7 @@ export function App() {
         </section>
 
         <section className="section section-countdown section-animated">
+          {renderSectionDivider(content.countdown.divider)}
           {renderSectionBranch(content.countdown.direction)}
           <h2>{content.countdown.title}</h2>
           <span className="material-symbols-rounded section-icon" aria-hidden="true">
@@ -749,6 +781,7 @@ export function App() {
         </section>
 
         <section className="section section-quote section-animated">
+          {renderSectionDivider(content.quote.divider)}
           {renderSectionBranch(content.quote.direction)}
           <h2>{content.quote.title}</h2>
           <blockquote>
@@ -758,6 +791,7 @@ export function App() {
         </section>
 
         <section className="section section-reception section-animated">
+          {renderSectionDivider(content.reception.divider)}
           {renderSectionBranch(content.reception.direction)}
           <h2>{content.reception.title}</h2>
           <span className="material-symbols-rounded section-icon" aria-hidden="true">
@@ -772,6 +806,7 @@ export function App() {
         </section>
 
         <section className="section section-dress-code section-animated">
+          {renderSectionDivider(content.dressCode.divider)}
           {renderSectionBranch(content.dressCode.direction)}
           <h2>{content.dressCode.title}</h2>
           <span className="material-symbols-rounded section-icon" aria-hidden="true">
@@ -782,6 +817,7 @@ export function App() {
         </section>
 
         <section className="section section-itinerary section-animated">
+          {renderSectionDivider(content.itinerary.divider)}
           {renderSectionBranch(content.itinerary.direction)}
           <h2>{content.itinerary.title}</h2>
           <ul className="itinerary-list">
@@ -795,6 +831,7 @@ export function App() {
         </section>
 
         <section className="section section-closing section-animated">
+          {renderSectionDivider(content.closing.divider)}
           {renderSectionBranch(content.closing.direction)}
           <span className="material-symbols-rounded section-icon section-icon-small" aria-hidden="true">
             favorite

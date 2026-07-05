@@ -23,7 +23,8 @@
   "quote": {
     "title": "",
     "text": "Con el mundo entero desmoronandose, nosotros seguimos eligiendonos.",
-    "author": "Jess y Carlos"
+    "author": "Jess y Carlos",
+    "divider": true
   },
   "reception": {
     "title": "Recepción",
@@ -44,7 +45,8 @@
     "direction": {
       "position": "bottom",
       "align": "right"
-    }
+    },
+    "divider": true
   },
   "itinerary": {
     "title": "Itinerario",
@@ -70,6 +72,7 @@
   },
   "closing": {
     "message": "Con amor Jess y Carlos los esperamos",
-    "note": "02 de Agosto 2026"
+    "note": "02 de Agosto 2026",
+    "divider": true
   }
 }
