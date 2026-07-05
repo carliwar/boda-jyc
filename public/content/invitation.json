@@ -1,0 +1,75 @@
+{
+  "meta": {
+    "eventDateTime": "2026-08-02T13:00:00"
+  },
+  "envelope": {
+    "title": "De: Jess y Carlos",
+    "stampText": "",
+    "cta": ""
+  },
+  "header": {
+    "eyebrow": "02-08-2026",
+    "names": "Jess y Carlos",
+    "subtitle": ""
+  },
+  "countdown": {
+    "title": "Ya falta poco",
+    "expiredMessage": "Ya llegó el gran día",
+    "direction": {
+      "position": "top",
+      "align": "right"
+    }
+  },
+  "quote": {
+    "title": "Quote",
+    "text": "Con el mundo entero desmoronandose, nosotros seguimos eligiendonos.",
+    "author": "Jess y Carlos"
+  },
+  "reception": {
+    "title": "Recepción",
+    "place": "Hacienda Salón Villavieja",
+    "address": "Río Solanga y Juan Procel",
+    "city": "Quito, Ecuador",
+    "buttonLabel": "Ver ubicación",
+    "mapUrl": "https://maps.app.goo.gl/Xs3BGasxyJBQBRjU8",
+    "direction": {
+      "position": "top",
+      "align": "left"
+    }
+  },
+  "dressCode": {
+    "title": "Código de vestimenta",
+    "description": "Formal elegante en tonos neutros y tierra.",
+    "note": "Evitar blanco total y colores neon.",
+    "direction": {
+      "position": "bottom",
+      "align": "right"
+    }
+  },
+  "itinerary": {
+    "title": "Itinerario",
+    "items": [
+      {
+        "time": "13:00",
+        "label": "Recepción de invitados"
+      },
+      {
+        "time": "14:00",
+        "label": "Ceremonia"
+      },
+      {
+        "time": "16:00",
+        "label": "Comida"
+      },
+      {
+        "time": "19:00",
+        "label": "Celebracion"
+      }
+    ]
+    
+  },
+  "closing": {
+    "message": "Con amor Jess y Carlos los esperamos",
+    "note": "02 de Agosto 2026"
+  }
+}

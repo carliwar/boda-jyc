@@ -1,16 +1,23 @@
 :root {
-  --ink: #1f1b18;
-  --sand: #f8f2eb;
-  --rose: #c46b6b;
-  --olive: #5e6f5b;
-  --stone: #d7cec3;
-  --text: #2f2a26;
+  --ink: #332c27;
+  --paper: #f5f1ec;
+  --paper-strong: #eee8df;
+  --taupe: #d7c9b5;
+  --taupe-deep: #b9a892;
+  --stone: #d7d2cb;
+  --text: #4a4038;
+  --shadow: rgba(68, 52, 39, 0.14);
+  --section-dark: #d8cbb9;
+  --section-a: #f3eadf;
+  --section-b: #e9dcc9;
 
-  --font-display: 'Cormorant Garamond', 'Georgia', serif;
-  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-title: 'Monsieur La Doulaise', 'Brush Script MT', cursive;
+  --font-script: 'Monsieur La Doulaise', 'Brush Script MT', cursive;
+  --font-body: 'Lora', 'Georgia', serif;
 
-  --fs-display: clamp(2.25rem, 8vw, 4.5rem);
-  --fs-h1: clamp(1.75rem, 6vw, 3rem);
+  --fs-display: clamp(2.4rem, 10vw, 4.6rem);
+  --fs-h1: clamp(2rem, 8vw, 3.2rem);
   --fs-body: 1rem;
   --fs-small: 0.875rem;
 
@@ -23,6 +30,6 @@
   --sp-7: 48px;
   --sp-8: 64px;
 
-  --max-page: 980px;
+  --max-page: 760px;
   --touch-min: 44px;
 }
