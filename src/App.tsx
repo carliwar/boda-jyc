@@ -298,9 +298,11 @@ export function App() {
   const [isEnvelopeOpen, setIsEnvelopeOpen] = useState(false);
   const [scrollDirection, setScrollDirection] = useState<'down' | 'up'>('down');
   const [now, setNow] = useState(() => Date.now());
+  const [isMuted, setIsMuted] = useState(false);
   const openTimeoutRef = useRef<number | null>(null);
   const invitationPageRef = useRef<HTMLElement | null>(null);
   const lastScrollYRef = useRef(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
@@ -323,6 +325,16 @@ export function App() {
       document.body.classList.remove('envelope-visible');
     };
   }, [isEnvelopeOpen]);
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+        audioRef.current = null;
+      }
+    };
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -533,6 +545,19 @@ export function App() {
       window.clearTimeout(openTimeoutRef.current);
     }
 
+    if (!audioRef.current) {
+      const audio = new Audio(`${import.meta.env.BASE_URL}audio/song.mp3`);
+      audio.loop = true;
+      audio.volume = 0.4;
+      audio.preload = 'auto';
+      audioRef.current = audio;
+    }
+
+    audioRef.current.muted = isMuted;
+    void audioRef.current.play().catch(() => {
+      // Autoplay may still be blocked in some browsers; user can retry via mute toggle.
+    });
+
     setIsEnvelopeOpening(true);
     openTimeoutRef.current = window.setTimeout(() => {
       setIsEnvelopeOpen(true);
@@ -551,9 +576,28 @@ export function App() {
       openTimeoutRef.current = null;
     }
 
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+
     setIsEnvelopeOpening(false);
     setIsEnvelopeOpen(false);
     window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }
+
+  function toggleMute() {
+    setIsMuted((previous) => {
+      const next = !previous;
+      if (audioRef.current) {
+        audioRef.current.muted = next;
+        if (!next && audioRef.current.paused && isEnvelopeOpen) {
+          void audioRef.current.play().catch(() => {
+            // Ignore playback errors triggered by browser policies.
+          });
+        }
+      }
+      return next;
+    });
   }
 
   function renderSectionBranch(direction: SectionDirection | undefined) {
@@ -639,6 +683,20 @@ export function App() {
               src={`${import.meta.env.BASE_URL}icons/envelope-closed.png`}
               alt=""
             />
+          </span>
+        </button>
+      ) : null}
+
+      {isEnvelopeOpen ? (
+        <button
+          type="button"
+          className="audio-toggle"
+          onClick={toggleMute}
+          aria-label={isMuted ? 'Activar musica' : 'Silenciar musica'}
+          aria-pressed={isMuted}
+        >
+          <span className="material-symbols-rounded audio-toggle-icon" aria-hidden="true">
+            {isMuted ? 'volume_off' : 'volume_up'}
           </span>
         </button>
       ) : null}
