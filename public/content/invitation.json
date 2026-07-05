@@ -26,8 +26,7 @@
     "buttonLabel": "Abrir álbum de fotos",
     "waitingLabel": "Esperando el día",
     "shareUrl": "https://photos.app.goo.gl/B2orqaYkp2ieVJyQ9",
-    "checkDate": true,
-    "divider": true
+    "checkDate": true
   },
   "quote": {
     "title": "",
