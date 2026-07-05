@@ -264,9 +264,13 @@ p {
 
 .section {
   background: var(--section-a);
+  min-height: clamp(420px, 62svh, 760px);
   padding: var(--sp-5) clamp(var(--sp-4), 6vw, var(--sp-7));
   margin-bottom: 0;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   position: relative;
   overflow: hidden;
 }
