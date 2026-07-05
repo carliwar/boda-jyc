@@ -1,0 +1,28 @@
+:root {
+  --ink: #1f1b18;
+  --sand: #f8f2eb;
+  --rose: #c46b6b;
+  --olive: #5e6f5b;
+  --stone: #d7cec3;
+  --text: #2f2a26;
+
+  --font-display: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --fs-display: clamp(2.25rem, 8vw, 4.5rem);
+  --fs-h1: clamp(1.75rem, 6vw, 3rem);
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  --max-page: 980px;
+  --touch-min: 44px;
+}
