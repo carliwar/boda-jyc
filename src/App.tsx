@@ -519,8 +519,8 @@ export function App() {
   const envelopeTitle = areGuestsReady
     ? matchedGuest?.to ?? 'Invitacion no valida'
     : 'Validando invitacion';
-  const envelopeFromLabel = `De: ${envelopeFrom}`;
-  const envelopeToLabel = `Para: ${matchedGuest?.to ?? ''}`;
+  const envelopeFromValue = envelopeFrom;
+  const envelopeToValue = matchedGuest?.to ?? '';
   const guestValidity = matchedGuest?.validity ?? null;
   const hasGuestValidity = Boolean(canOpenEnvelope && guestValidity);
 
@@ -594,8 +594,12 @@ export function App() {
             <span className={`envelope-copy${hasGuestValidity ? ' envelope-copy-has-validity' : ''}`}>
               {canOpenEnvelope ? (
                 <>
-                  <strong className="envelope-party">{envelopeFromLabel}</strong>
-                  <strong className="envelope-party">{envelopeToLabel}</strong>
+                  <strong className="envelope-party">
+                    <span className="envelope-party-label">De:</span> {envelopeFromValue}
+                  </strong>
+                  <strong className="envelope-party">
+                    <span className="envelope-party-label">Para:</span> {envelopeToValue}
+                  </strong>
                 </>
               ) : (
                 <strong>{envelopeTitle}</strong>

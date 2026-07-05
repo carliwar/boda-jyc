@@ -154,7 +154,7 @@ p {
 
 .envelope-copy {
   position: absolute;
-  top: 108px;
+  top: 165px;
   left: 50%;
   transform: translateX(-50%);
   width: calc(100% - 32px);
@@ -164,14 +164,12 @@ p {
   z-index: 4;
 }
 
-.envelope-copy.envelope-copy-has-validity {
-  top: 108px;
-}
+
 
 .envelope-copy strong {
   font-family: var(--font-script);
   color: var(--ink);
-  font-size: 1.75rem;
+  font-size: 1rem;
   font-weight: 400;
   margin-top: 0.18rem;
 }
@@ -183,6 +181,15 @@ p {
   font-weight: 400;
   margin-top: 0;
   line-height: 0.98;
+}
+
+.envelope-copy .envelope-party-label {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 900;
+  letter-spacing: normal;
+  text-transform: none;
+  color: inherit;
 }
 
 .envelope-copy span {
