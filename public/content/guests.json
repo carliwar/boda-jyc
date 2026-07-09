@@ -69,6 +69,11 @@
       "to": "Vale",
       "url": "vale",
       "validity": 1
+    },
+    {
+      "to": "Dolores",
+      "url": "dolores",
+      "validity": 1
     }
   ]
 }
