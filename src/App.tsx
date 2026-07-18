@@ -76,6 +76,13 @@ type InvitationContent = {
     direction?: SectionDirection;
     divider?: boolean | null;
   };
+  gifts: {
+    title: string;
+    description: string;
+    note: string;
+    direction?: SectionDirection;
+    divider?: boolean | null;
+  };
   dressCode: {
     title: string;
     description: string;
@@ -134,6 +141,12 @@ const fallbackContent: InvitationContent = {
     city: 'Guadalajara, Jalisco',
     buttonLabel: 'Ver ubicacion en Google Maps',
     mapUrl: 'https://maps.google.com',
+  },
+  gifts: {
+    title: 'Lluvia de sobres',
+    description:
+      'Su compania es nuestro mejor regalo. Si desean obsequiarnos algo mas, un sobre con su carino nos ayudara a construir nuestro nuevo hogar.',
+    note: 'Encontraran un buzon en la recepcion para depositarlo.',
   },
   dressCode: {
     title: 'Codigo de vestimenta',
@@ -315,6 +328,13 @@ function mergeInvitationContent(incoming: PartialInvitation): InvitationContent 
       mapUrl: incoming.reception?.mapUrl ?? fallbackContent.reception.mapUrl,
       direction: parseDirection(incoming.reception?.direction),
       divider: parseDivider(incoming.reception?.divider),
+    },
+    gifts: {
+      title: incoming.gifts?.title ?? fallbackContent.gifts.title,
+      description: incoming.gifts?.description ?? fallbackContent.gifts.description,
+      note: incoming.gifts?.note ?? fallbackContent.gifts.note,
+      direction: parseDirection(incoming.gifts?.direction),
+      divider: parseDivider(incoming.gifts?.divider),
     },
     dressCode: {
       title: incoming.dressCode?.title ?? fallbackContent.dressCode.title,
@@ -887,6 +907,17 @@ export function App() {
           <a className="cta-button" href={content.reception.mapUrl} target="_blank" rel="noreferrer">
             {content.reception.buttonLabel}
           </a>
+        </section>
+
+        <section className="section section-gifts section-animated">
+          {renderSectionDivider(content.gifts.divider)}
+          {renderSectionBranch(content.gifts.direction)}
+          <h2>{content.gifts.title}</h2>
+          <span className="material-symbols-rounded section-icon" aria-hidden="true">
+            redeem
+          </span>
+          <p>{content.gifts.description}</p>
+          <p className="dress-note">{content.gifts.note}</p>
         </section>
 
         <section className="section section-dress-code section-animated">

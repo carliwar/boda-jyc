@@ -7,11 +7,13 @@
     },
     {
       "to": "Ricardo y Marlene",
-      "url": "ricardo"
+      "url": "ricardo",
+      "validity": 2
     },
     {
-      "to":"Key, Kyotto y Marachi",
-      "url": "key"
+      "to":"Key",
+      "url": "key",
+      "validity": 1
     },
     {
       "to": "Danny y Diana",
@@ -73,6 +75,16 @@
     {
       "to": "Dolores",
       "url": "dolores",
+      "validity": 1
+    },
+    {
+      "to": "Brenda",
+      "url": "brenda",
+      "validity": 1
+    },
+    {
+      "to": "Alicia",
+      "url": "alicia",
       "validity": 1
     }
   ]

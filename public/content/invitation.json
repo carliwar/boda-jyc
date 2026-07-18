@@ -18,7 +18,8 @@
     "direction": {
       "position": "top",
       "align": "right"
-    }
+    },
+    "divider": true
   },
   "photoAlbum": {
     "title": "Comparte tus fotos",
@@ -26,7 +27,11 @@
     "buttonLabel": "Abrir álbum de fotos",
     "waitingLabel": "Esperando el día",
     "shareUrl": "https://photos.app.goo.gl/B2orqaYkp2ieVJyQ9",
-    "checkDate": true
+    "checkDate": true,
+    "direction": {
+      "position": "bottom",
+      "align": "left"
+    }
   },
   "quote": {
     "title": "",
@@ -42,19 +47,28 @@
     "buttonLabel": "Ver ubicación",
     "mapUrl": "https://maps.app.goo.gl/Xs3BGasxyJBQBRjU8",
     "direction": {
+      "position": "bottom",
+      "align": "right"
+    }
+  },
+  "gifts": {
+    "title": "Lluvia de sobres",
+    "description": "Su compañía es nuestro mejor regalo. Si desean obsequiarnos algo más, un sobre con su cariño nos ayudará a construir nuestro nuevo hogar.",
+    "note": "Encontrarán un buzón en la recepción para depositarlo.",
+    "direction": {
       "position": "top",
       "align": "left"
-    }
+    },
+    "divider": true
   },
   "dressCode": {
     "title": "Código de vestimenta",
     "description": "Casual elegante/Garden party",
     "note": "Evitar blanco total y colores neon.",
     "direction": {
-      "position": "bottom",
+      "position": "top",
       "align": "right"
-    },
-    "divider": true
+    }
   },
   "itinerary": {
     "title": "Itinerario",
@@ -91,11 +105,11 @@
         "time": "19:00",
         "label": "Fin de la recepción"
       }
-    ]
+    ],
+    "divider": true
   },
   "closing": {
     "message": "Con amor Jess y Carlos los esperamos",
-    "note": "02 de Agosto 2026",
-    "divider": true
+    "note": "02 de Agosto 2026"
   }
 }
