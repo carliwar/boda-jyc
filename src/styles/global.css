@@ -427,19 +427,20 @@ p {
 }
 
 .section-divider {
-  position: absolute;
-  top: var(--sp-2);
-  left: 50%;
-  transform: translateX(-50%);
   display: block;
-  width: clamp(560px, 96vw, 960px);
+  width: min(680px, 96%);
   max-width: 100%;
-  height: 168px;
+  height: clamp(72px, 18vw, 148px);
   object-fit: contain;
+  margin: 0 auto var(--sp-4);
   opacity: 0.6;
   pointer-events: none;
   user-select: none;
-  z-index: 1;
+  flex: none;
+}
+
+.section > h2 {
+  order: -1;
 }
 
 .section > :not(.section-branch):not(.section-divider) {
